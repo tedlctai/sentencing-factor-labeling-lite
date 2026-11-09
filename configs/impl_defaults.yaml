@@ -1,0 +1,34 @@
+# Implementation settings: details that are not given in configs/paper.yaml.
+
+chunking:
+  # Matches Chinese-numeral headings such as "一、" at the start of the text or
+  # after a sentence/line break. The paper writes the headings symbolically as
+  # (1), (2), (3).
+  heading_regex: "(?m)(?:^|(?<=[。；\\n]))(?=[一二三四五六七八九十]+、)"
+  # No heading found -> the whole text is one chunk.
+
+cua:
+  sentence_separators: "。；：，"
+  min_sentence_len: 5
+  kmeans_seed: 42
+  kmeans_n_init: 10                 # sklearn default
+  crf_c1: 0.1
+  crf_c2: 0.1
+  crf_max_iterations: 100
+  crf_all_possible_transitions: true
+  vote_tie_break: "important"       # keep the chunk when votes tie
+  # Passage-level labels are copied to every sentence of the passage when
+  # training the CRF.
+
+labeler:
+  empty_after_cua: "absent"         # no retained chunk -> factor absent (strict reading of L)
+  query_instruction: null           # no query prefix
+  max_seq_length: 8192
+
+finetune_data:
+  unit: "chunk"                     # retrieved units are heading chunks
+  sentence_separators: "。；："
+  min_sentence_len: 20
+  top_k: 5
+  dev_fraction: 0.1                 # Table I: Train 90% / Test 10%
+  entries_per_positive: 1

@@ -1,0 +1,9 @@
+# Reduced settings so that the demo fits one Colab GPU. The paper's values are in configs/paper.yaml.
+# The demo's fine-tuning set is also much smaller than the paper's.
+finetune:
+  batch_size: 4                    # paper: 32
+  group_size: 16                   # same as the paper (1 positive + 15 negatives)
+  epochs: 3
+  passage_max_len: 256
+  freeze_embeddings: true          # word-embedding matrix (~256M parameters) stays fixed to save memory
+  gradient_checkpointing: true

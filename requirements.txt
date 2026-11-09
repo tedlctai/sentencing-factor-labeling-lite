@@ -1,0 +1,6 @@
+numpy
+scikit-learn
+pyyaml
+python-crfsuite
+sentence-transformers
+requests

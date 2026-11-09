@@ -1,0 +1,40 @@
+# Settings stated in the paper (KSE 2026, camera-ready); each entry cites its section.
+# The code reads the threshold grid and the fine-tuning defaults from here; the other
+# entries document the method. Details the paper does not give are in
+# configs/impl_defaults.yaml.
+
+chunking:                       # Sec. IV-A
+  unit: "Fact of the Case"      # the paper's "judgment" is the fact section
+  heading_style: "enumerated headings"
+
+cua:                            # Sec. IV-B
+  n_clusters: 8                 # "We use k = 8 clusters"
+  n_labeled_passages: 40        # "train the CRF on 40 passages"
+  crf_features: [current, prev, next, is_first, is_last]
+  aggregation: "argmax_vote"    # argmax over per-sentence predictions
+  one_module_for_all_case_types: true
+
+threshold:                      # Sec. V-B, Threshold Selection
+  grid_start: 0.50
+  grid_stop: 0.85
+  grid_step: 0.05
+  depends_on: [case_type, encoder_family]   # pre-trained vs fine-tuned
+
+finetune:                       # Sec. IV-C and V-B
+  base_model: "BAAI/bge-m3"
+  batch_size: 32
+  group_size: 16                # 1 positive + 15 negatives
+  pos_neg_ratio: [1, 15]
+  epochs: 10
+  optimizer: "AdamW"
+  learning_rate: 2.0e-5
+  warmup_ratio: 0.1
+  temperature: 0.02
+  pooling: "cls"
+  precision: "fp16"
+  gpus: "2x NVIDIA GeForce RTX 4090"
+  approx_training_hours: 6
+
+metrics:                        # Sec. V-C
+  computed_over: "(judgment, factor) pairs, label-wise"
+  report: [accuracy, precision, recall, f1, hamming_loss]

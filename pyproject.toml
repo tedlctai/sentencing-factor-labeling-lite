@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sfl"
+version = "0.1.0"
+description = "Lightweight implementation of an embedding-based sentencing factor labeling pipeline."
+requires-python = ">=3.9"
+dependencies = [
+  "numpy",
+  "scikit-learn",
+  "pyyaml",
+  "python-crfsuite",
+  "requests",
+]
+
+[project.optional-dependencies]
+encoder = ["sentence-transformers"]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

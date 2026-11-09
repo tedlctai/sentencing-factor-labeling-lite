@@ -1,0 +1,9 @@
+outputs/
+__pycache__/
+*.pyc
+*.egg-info/
+.ipynb_checkpoints/
+
+data/real/
+.venv/
+.DS_Store
